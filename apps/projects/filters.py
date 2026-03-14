@@ -4,12 +4,16 @@ from apps.projects.models import Epic, Sprint
 
 
 class SprintFilter(django_filters.FilterSet):
+    '''Filter for Sprint model.
+    '''
     class Meta:
         model = Sprint
         fields = ('project', 'is_active')
 
 
 class EpicFilter(django_filters.FilterSet):
+    '''Filter for Epic model.
+    '''
     class Meta:
         model = Epic
         fields = ('project', 'sprint', 'status')

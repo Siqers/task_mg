@@ -2,6 +2,7 @@ from rest_framework.permissions import BasePermission, SAFE_METHODS
 
 
 class IsProjectOwner(BasePermission):
+    '''Custom permission to only allow project owners to edit or delete their projects.'''
     message = 'Only the project owner can modify or delete this project.'
 
     def has_object_permission(self, request, view, obj):

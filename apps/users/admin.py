@@ -6,6 +6,7 @@ from apps.users.models import User
 
 @admin.register(User)
 class UserAdmin(BaseUserAdmin):
+    '''Admin interface for the custom User model.'''
     list_display = ('email', 'full_name', 'is_staff')
     search_fields = ('email', 'full_name', 'phone')
     list_filter = ('is_staff', 'is_active', 'is_superuser', 'created_at')

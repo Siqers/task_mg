@@ -3,6 +3,7 @@ from django.db import models
 
 
 class Tag(models.Model):
+    '''Model representing a tag that can be associated with tasks.'''
     name = models.CharField(max_length=100, unique=True)
 
     class Meta:
@@ -13,6 +14,7 @@ class Tag(models.Model):
 
 
 class Task(models.Model):
+    '''Model representing a task within a project.'''
     STATUS_TODO = 'todo'
     STATUS_IN_PROGRESS = 'in_progress'
     STATUS_REVIEW = 'review'
@@ -56,6 +58,7 @@ class Task(models.Model):
 
 
 class SubTask(models.Model):
+    '''Model representing a subtask that belongs to a task.'''
     task = models.ForeignKey('tasks.Task', on_delete=models.CASCADE, related_name='subtasks')
     title = models.CharField(max_length=255)
     is_completed = models.BooleanField(default=False)
@@ -68,6 +71,7 @@ class SubTask(models.Model):
 
 
 class Comment(models.Model):
+    '''Model representing a comment made on a task.'''
     task = models.ForeignKey('tasks.Task', on_delete=models.CASCADE, related_name='comments')
     author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='comments')
     body = models.TextField()

@@ -7,12 +7,14 @@ User = get_user_model()
 
 
 class OwnerMiniSerializer(serializers.ModelSerializer):
+    '''Serializer for representing project owners with minimal information.'''
     class Meta:
         model = User
         fields = ('id', 'email', 'full_name')
 
 
 class MembershipSerializer(serializers.ModelSerializer):
+    '''Serializer for representing project memberships, including user details.'''
     user = OwnerMiniSerializer(read_only=True)
 
     class Meta:
@@ -21,6 +23,7 @@ class MembershipSerializer(serializers.ModelSerializer):
 
 
 class ProjectSerializer(serializers.ModelSerializer):
+    '''Serializer for representing projects, including owner details and member count.'''
     owner = OwnerMiniSerializer(read_only=True)
     members_count = serializers.IntegerField(read_only=True)
 
@@ -31,6 +34,7 @@ class ProjectSerializer(serializers.ModelSerializer):
 
 
 class SprintSerializer(serializers.ModelSerializer):
+    '''Serializer for representing sprints, including project details.'''
     class Meta:
         model = Sprint
         fields = ('id', 'project', 'title', 'start_date', 'end_date', 'is_active')
@@ -38,6 +42,7 @@ class SprintSerializer(serializers.ModelSerializer):
 
 
 class EpicSerializer(serializers.ModelSerializer):
+    '''Serializer for representing epics, including project and sprint details.'''
     class Meta:
         model = Epic
         fields = ('id', 'project', 'sprint', 'title', 'description', 'status')
