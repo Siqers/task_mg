@@ -13,6 +13,7 @@ from apps.projects.serializers import EpicSerializer, ProjectSerializer, SprintS
     post=extend_schema(tags=['Projects'], summary='Create project', request=ProjectSerializer, responses={201: ProjectSerializer}),
 )
 class ProjectListCreateView(generics.ListCreateAPIView):
+    '''View for listing and creating projects.'''
     serializer_class = ProjectSerializer
     permission_classes = [permissions.IsAuthenticated]
     search_fields = ('name', 'description', 'owner__email', 'owner__full_name')
@@ -20,9 +21,11 @@ class ProjectListCreateView(generics.ListCreateAPIView):
     ordering = ('-created_at',)
 
     def get_queryset(self):
+        '''Return projects where the user is a member or owner, annotated with members count.'''
         return Project.objects.select_related('owner').annotate(members_count=Count('memberships', distinct=True))
 
     def perform_create(self, serializer):
+        '''Create a new project and add the creator as a member with captain role.'''
         project = serializer.save(owner=self.request.user)
         Membership.objects.get_or_create(
             user=self.request.user,
@@ -37,6 +40,7 @@ class ProjectListCreateView(generics.ListCreateAPIView):
     delete=extend_schema(tags=['Projects'], summary='Delete project', responses={204: OpenApiResponse(description='Deleted successfully')}),
 )
 class ProjectDetailView(generics.RetrieveUpdateDestroyAPIView):
+    '''View for retrieving, updating, and deleting a project. Only the owner can update or delete.'''
     serializer_class = ProjectSerializer
     permission_classes = [permissions.IsAuthenticated, IsProjectOwner]
 
@@ -49,6 +53,7 @@ class ProjectDetailView(generics.RetrieveUpdateDestroyAPIView):
     post=extend_schema(tags=['Sprints'], summary='Create sprint', request=SprintSerializer, responses={201: SprintSerializer}),
 )
 class SprintListCreateView(generics.ListCreateAPIView):
+    '''View for listing and creating sprints.'''
     serializer_class = SprintSerializer
     permission_classes = [permissions.IsAuthenticated]
     queryset = Sprint.objects.select_related('project')
@@ -63,6 +68,7 @@ class SprintListCreateView(generics.ListCreateAPIView):
     post=extend_schema(tags=['Epics'], summary='Create epic', request=EpicSerializer, responses={201: EpicSerializer}),
 )
 class EpicListCreateView(generics.ListCreateAPIView):
+    '''View for listing and creating epics.'''
     serializer_class = EpicSerializer
     permission_classes = [permissions.IsAuthenticated]
     queryset = Epic.objects.select_related('project', 'sprint')

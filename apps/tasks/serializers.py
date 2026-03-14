@@ -7,12 +7,14 @@ User = get_user_model()
 
 
 class TaskUserMiniSerializer(serializers.ModelSerializer):
+    '''Serializer for representing users in a minimal format (id, email, full_name)'''
     class Meta:
         model = User
         fields = ('id', 'email', 'full_name')
 
 
 class TagSerializer(serializers.ModelSerializer):
+    '''Serializer for representing tags (id, name)'''
     class Meta:
         model = Tag
         fields = ('id', 'name')
@@ -20,6 +22,7 @@ class TagSerializer(serializers.ModelSerializer):
 
 
 class SubTaskSerializer(serializers.ModelSerializer):
+    '''Serializer for representing subtasks (id, task, title, is_completed)'''
     class Meta:
         model = SubTask
         fields = ('id', 'task', 'title', 'is_completed')
@@ -27,6 +30,7 @@ class SubTaskSerializer(serializers.ModelSerializer):
 
 
 class CommentSerializer(serializers.ModelSerializer):
+    '''Serializer for representing comments (id, task, author, body, created_at)'''
     author = TaskUserMiniSerializer(read_only=True)
 
     class Meta:
@@ -36,6 +40,7 @@ class CommentSerializer(serializers.ModelSerializer):
 
 
 class TaskSerializer(serializers.ModelSerializer):
+    '''Serializer for representing tasks with all details, including related fields'''
     author = TaskUserMiniSerializer(read_only=True)
     assignee = TaskUserMiniSerializer(read_only=True)
     assignee_id = serializers.PrimaryKeyRelatedField(

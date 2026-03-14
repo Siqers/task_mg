@@ -1,3 +1,18 @@
+"""
+Root URL configuration for the project.
+
+This module defines the main URL routing for the Django application.
+It connects different app routes and exposes API documentation endpoints.
+
+Routes included:
+- Django admin panel
+- Authentication API
+- Projects API
+- Tasks API
+- OpenAPI schema generation
+- Swagger UI documentation
+"""
+
 from django.contrib import admin
 from django.urls import include, path
 from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView

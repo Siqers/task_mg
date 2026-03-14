@@ -4,6 +4,7 @@ from django.db import models
 
 
 class UserManager(BaseUserManager):
+    '''Custom user manager where email is the unique identifier for authentication instead of usernames.'''
     def create_user(self, email, password=None, **extra_fields):
         if not email:
             raise ValueError('The Email field must be set.')
@@ -15,6 +16,7 @@ class UserManager(BaseUserManager):
         return user
 
     def create_superuser(self, email, password=None, **extra_fields):
+        '''Create and save a SuperUser with the given email and password.'''
         extra_fields.setdefault('is_staff', True)
         extra_fields.setdefault('is_superuser', True)
         extra_fields.setdefault('is_active', True)
@@ -28,6 +30,7 @@ class UserManager(BaseUserManager):
 
 
 class User(AbstractBaseUser, PermissionsMixin):
+    '''Custom user model that uses email as the unique identifier instead of username.'''
     email = models.EmailField(unique=True)
     full_name = models.CharField(max_length=255)
     phone = models.CharField(max_length=30, blank=True, null=True)

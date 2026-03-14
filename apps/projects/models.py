@@ -3,6 +3,7 @@ from django.db import models
 
 
 class Project(models.Model):
+    '''A project represents a collection of related work items, such as sprints and epics.'''
     name = models.CharField(max_length=255)
     description = models.TextField(blank=True)
     owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='owned_projects')
@@ -16,6 +17,7 @@ class Project(models.Model):
 
 
 class Membership(models.Model):
+    '''Membership represents a user's role within a project, such as captain, member, or viewer.'''
     ROLE_CAPTAIN = 'captain'
     ROLE_MEMBER = 'member'
     ROLE_VIEWER = 'viewer'
@@ -40,6 +42,7 @@ class Membership(models.Model):
 
 
 class Sprint(models.Model):
+    '''A sprint represents a time-boxed period of work within a project, typically associated with a set of epics.'''
     project = models.ForeignKey('projects.Project', on_delete=models.CASCADE, related_name='sprints')
     title = models.CharField(max_length=255)
     start_date = models.DateField()
@@ -54,6 +57,7 @@ class Sprint(models.Model):
 
 
 class Epic(models.Model):
+    '''An epic represents a large body of work that can be broken down into smaller tasks or user stories.'''
     STATUS_OPEN = 'open'
     STATUS_IN_PROGRESS = 'in_progress'
     STATUS_CLOSED = 'closed'

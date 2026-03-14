@@ -16,6 +16,17 @@ class Command(BaseCommand):
 
     @transaction.atomic
     def handle(self, *args, **options):
+        '''
+        Function to seed the database with demo data for SprintHub.
+        This function will:
+        - Clear existing data from all relevant models.
+        - Create a superuser for admin access.
+        - Create 7 regular users with unique emails and names.
+        - Create 3 projects, each owned by a different user.
+        - Create memberships for users in each project with varying roles.
+        - Create 6 sprints across the projects with different start and end dates.
+        - Create 8 epics distributed across the projects with varying statuses.
+        '''
         self.stdout.write(self.style.WARNING('Seeding SprintHub data...'))
 
         Comment.objects.all().delete()
